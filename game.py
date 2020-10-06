@@ -49,7 +49,9 @@ def game_loop(game_board: pygame, display, game_settings: GameSettings):
                 game_playing = False
 
             # Logging
-            print(f"Snake Position: x={snake.head_position[0]}, y={snake.head_position[1]}")
+            print(
+                f"Snake Position: x={snake.head_position[0]}, y={snake.head_position[1]}"
+            )
             print(f"Food Position: x={food.position[0]}, y={food.position[1]}")
             print(f"Score: {score}")
             if food.position == snake.head_position:
@@ -59,10 +61,22 @@ def game_loop(game_board: pygame, display, game_settings: GameSettings):
 
             # Rendering Game
             display.fill(colors.background)
-            game_board.draw.rect(display, colors.highlight, [food.position[0], food.position[1], pixel, pixel])
-            game_board.draw.rect(display, colors.main, [snake.head_position[0], snake.head_position[1], pixel, pixel])
+            game_board.draw.rect(
+                display,
+                colors.highlight,
+                [food.position[0], food.position[1], pixel, pixel],
+            )
+            game_board.draw.rect(
+                display,
+                colors.main,
+                [snake.head_position[0], snake.head_position[1], pixel, pixel],
+            )
             for tail_position in snake.tail:
-                game_board.draw.rect(display, colors.main, [tail_position[0], tail_position[1], pixel, pixel])
+                game_board.draw.rect(
+                    display,
+                    colors.main,
+                    [tail_position[0], tail_position[1], pixel, pixel],
+                )
             game_board.display.update()
             clock.tick(10)
 
