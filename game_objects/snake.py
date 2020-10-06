@@ -25,3 +25,4 @@ class Snake:
             position + direction
             for position, direction in zip(self.head_position, self.direction)
         ]
+
