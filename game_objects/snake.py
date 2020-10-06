@@ -1,6 +1,6 @@
 class Snake:
     def __init__(self, position: [int], pixel):
-        self.position = position
+        self.head_position = position
         self.direction = [0, 0]
         self._pixel = pixel
 
@@ -17,5 +17,5 @@ class Snake:
         self.direction = [0, +self._pixel];
 
     def resolve_position(self):
-        self.position = [position + direction for position, direction in
+        self.head_position = [position + direction for position, direction in
                          zip(self.position, self.direction)];
