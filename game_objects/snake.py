@@ -21,5 +21,8 @@ class Snake:
         self.tail.append(self.head_position)
         if len(self.tail) > score:
             self.tail.pop(0)
-        self.head_position = [position + direction for position, direction in
-                              zip(self.head_position, self.direction)]
+        self.head_position = [
+            position + direction
+            for position, direction in zip(self.head_position, self.direction)
+        ]
+
