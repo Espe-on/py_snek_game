@@ -4,9 +4,9 @@ class GameColors:
                  background: tuple = (0, 0, 0),
                  highlight: tuple = (255, 0, 255)
                  ):
-        self.main = main;
-        self.background = background;
-        self.highlight = highlight;
+        self.main = main
+        self.background = background
+        self.highlight = highlight
 
 
 class GameSettings:
@@ -16,7 +16,7 @@ class GameSettings:
                  pixel_size: int = 10,
                  colors: GameColors = GameColors()
                  ):
-        self.display_size = [display_width, display_height];
-        self.starting_position = [int(display_width / 2), int(display_height / 2)];
-        self.pixel_size = pixel_size;
-        self.colours = colors;
+        self.display_size = [display_width, display_height]
+        self.starting_position = [int(display_width / 2), int(display_height / 2)]
+        self.pixel_size = pixel_size
+        self.colours = colors
