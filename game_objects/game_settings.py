@@ -5,6 +5,7 @@ class GameColors:
         background: tuple = (0, 0, 0),
         highlight: tuple = (255, 0, 255),
     ):
+
         self.main = main
         self.background = background
         self.highlight = highlight
