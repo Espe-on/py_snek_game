@@ -6,7 +6,7 @@ class GameColors:
                  ):
         self.main = main;
         self.background = background;
-        self.color_highlight = highlight;
+        self.highlight = highlight;
 
 
 class GameSettings:
@@ -16,8 +16,7 @@ class GameSettings:
                  pixel_size: int = 10,
                  colors: GameColors = GameColors()
                  ):
-        self.display_width = display_width;
-        self.display_height = display_height;
+        self.display_size = [display_width, display_height];
         self.starting_position = [int(display_width / 2), int(display_height / 2)];
         self.pixel_size = pixel_size;
         self.colours = colors;
