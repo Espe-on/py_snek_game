@@ -26,3 +26,5 @@ class Snake:
             for position, direction in zip(self.head_position, self.direction)
         ]
 
+    def is_eating_itself(self):
+        return self.head_position in self.tail

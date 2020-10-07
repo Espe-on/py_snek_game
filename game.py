@@ -47,6 +47,8 @@ def game_loop(game_board: pygame, display, game_settings: GameSettings):
             snake.resolve_position(score)
             if snake_is_out_of_bounds(snake.head_position, display_size):
                 game_playing = False
+            if snake.is_eating_itself():
+                game_playing = False
 
             # Logging
             print(
