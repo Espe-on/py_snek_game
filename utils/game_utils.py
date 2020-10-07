@@ -11,6 +11,6 @@ def snake_is_out_of_bounds(snake_position: [int], display_size: [int]):
 
 def generate_random_square(display_size: [int], square_size: int):
     return [
-        round(random.randrange(0, display_size[0]) / square_size) * square_size,
-        round(random.randrange(0, display_size[1]) / square_size) * square_size,
+        round(random.randrange(0, display_size[0]-square_size) / square_size) * square_size,
+        round(random.randrange(0, display_size[1]-square_size) / square_size) * square_size,
     ]

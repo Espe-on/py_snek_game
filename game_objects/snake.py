@@ -21,8 +21,12 @@ class Snake:
         self.tail.append(self.head_position)
         if len(self.tail) > score:
             self.tail.pop(0)
-
+            
         self.head_position = (
             self.head_position[0] + self.direction[0],
             self.head_position[1] + self.direction[1],
         )
+        
+    def is_eating_itself(self):
+        return self.head_position in self.tail
+
