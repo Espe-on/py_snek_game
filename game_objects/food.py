@@ -7,5 +7,7 @@ class Food:
         self._display_size = display_size
         self._square_size = square_size
 
-    def move_food(self):
+    def move_food(self, tail: (int, int)):
         self.position = generate_random_square(self._display_size, self._square_size)
+        while self.position in tail:
+            self.position = generate_random_square(self._display_size, self._square_size)

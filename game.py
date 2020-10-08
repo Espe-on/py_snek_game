@@ -43,7 +43,7 @@ def game_loop(game_board: pygame, display, game_settings: GameSettings):
                         snake.move_down()
             if food.position == snake.head_position:
                 score = score + 1
-                food.move_food()
+                food.move_food(snake.tail)
             snake.resolve_position(score)
             if snake_is_out_of_bounds(snake.head_position, display_size):
                 game_playing = False
