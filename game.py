@@ -33,13 +33,13 @@ def game_loop(game_board: pygame, display, game_settings: GameSettings):
                 if event.type == game_board.QUIT:
                     game_running = False
                 if event.type == game_board.KEYDOWN:
-                    if event.key == game_board.K_LEFT:
+                    if event.key == game_board.K_LEFT and not (snake.direction == snake.direction_right):
                         snake.move_left()
-                    elif event.key == game_board.K_RIGHT:
+                    elif event.key == game_board.K_RIGHT and not (snake.direction == snake.direction_left):
                         snake.move_right()
-                    elif event.key == game_board.K_UP:
+                    elif event.key == game_board.K_UP and not (snake.direction == snake.direction_down):
                         snake.move_up()
-                    elif event.key == game_board.K_DOWN:
+                    elif event.key == game_board.K_DOWN and not (snake.direction == snake.direction_up):
                         snake.move_down()
             if food.position == snake.head_position:
                 score = score + 1
