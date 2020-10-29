@@ -15,4 +15,4 @@ display = pygame.display.set_mode(
 
 pygame.display.set_caption("Py_Snek_Game")
 
-game_loop(pygame, display, game_settings)
+game_loop(display, game_settings)
