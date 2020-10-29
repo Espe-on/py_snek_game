@@ -2,6 +2,7 @@ import time
 
 import pygame
 from pygame import Color, Rect, Surface
+from pygame.constants import QUIT, KEYDOWN, K_LEFT, K_RIGHT, K_UP, K_DOWN
 from pygame.font import Font
 
 from game_objects.food import Food
@@ -32,25 +33,25 @@ def game_loop(game_board: pygame, display: Surface, game_settings: GameSettings)
         score = 0
         while game_playing:
             for event in game_board.event.get():
-                if event.type == game_board.QUIT:
+                if event.type == QUIT:
                     game_running = False
-                if event.type == game_board.KEYDOWN:
-                    if event.key == game_board.K_LEFT and not (
+                if event.type == KEYDOWN:
+                    if event.key == K_LEFT and not (
                         snake.direction == snake.direction_right
                     ):
                         snake.move_left()
 
-                    elif event.key == game_board.K_RIGHT and not (
+                    elif event.key == K_RIGHT and not (
                         snake.direction == snake.direction_left
                     ):
                         snake.move_right()
 
-                    elif event.key == game_board.K_UP and not (
+                    elif event.key == K_UP and not (
                         snake.direction == snake.direction_down
                     ):
                         snake.move_up()
 
-                    elif event.key == game_board.K_DOWN and not (
+                    elif event.key == K_DOWN and not (
                         snake.direction == snake.direction_up
                     ):
                         snake.move_down()
