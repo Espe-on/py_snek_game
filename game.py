@@ -25,51 +25,7 @@ def game_loop(display: Surface, game_settings: GameSettings):
     playing = False
     score = 0
 
-    def message(msg: str, color: Color, font: Font):
-        text = font.render(msg, False, color)
-        text_rect = text.get_rect()
-        text_rect.center = game_settings.starting_position
-
-        return text, text_rect
-
-    def display_message(msg: str, color: Color, font: Font):
-        displaying = True
-        time = 2000
-
-        while displaying:
-            for event in pygame.event.get():
-                if event.type == QUIT:
-                    pygame.quit()
-                    quit()
-
-            display.fill(colors.background)
-            pygame.display.update()
-            print(f"displaying {msg}")
-            text, text_rect = message(msg, color, font)
-            pygame.draw.rect(
-                display,
-                Color(128, 0, 128),
-                text_rect,
-            )
-            display.blit(text, text_rect)
-
-            time -= clock.tick(1)
-            if time <= 0:
-                displaying = False
-
-    def draw_score():
-        score_text, score_text_rect = message(
-            f"{score}", Color(40, 40, 40), font_style_large
-        )
-        display.blit(score_text, score_text_rect)
-
-    # This section is the game intro screen
-    while game_running:
-        if intro:
-            display_message("SNAKE!", colors.main, font_style_large)
-            intro = False
-            playing = True
-
+    def handle_event():
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
@@ -94,6 +50,50 @@ def game_loop(display: Surface, game_settings: GameSettings):
                     snake.direction == snake.direction_up
                 ):
                     snake.move_down()
+
+    def wait(ms: int):
+        waiting = True
+        while waiting:
+            handle_event()
+
+            ms -= clock.tick(120)
+            if ms <= 0:
+                waiting = False
+
+    def message(msg: str, color: Color, font: Font):
+        text = font.render(msg, False, color)
+        text_rect = text.get_rect()
+        text_rect.center = game_settings.starting_position
+
+        return text, text_rect
+
+    def display_message(msg: str, color: Color, font: Font):
+        display.fill(colors.background)
+        pygame.display.update()
+        print(f"displaying {msg}")
+        text, text_rect = message(msg, color, font)
+        pygame.draw.rect(
+            display,
+            Color(128, 0, 128),
+            text_rect,
+        )
+        display.blit(text, text_rect)
+        wait(2000)
+
+    def draw_score():
+        score_text, score_text_rect = message(
+            f"{score}", Color(40, 40, 40), font_style_large
+        )
+        display.blit(score_text, score_text_rect)
+
+    # This section is the game intro screen
+    while game_running:
+        if intro:
+            display_message("SNAKE!", colors.main, font_style_large)
+            intro = False
+            playing = True
+
+        handle_event()
 
         if playing:
             if food.position == snake.head_position:
@@ -142,6 +142,7 @@ def game_loop(display: Surface, game_settings: GameSettings):
                     colors.main,
                     [tail_position[0], tail_position[1], pixel_size, pixel_size],
                 )
+
             clock.tick(10)
 
         if crashed:
