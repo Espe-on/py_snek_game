@@ -1,18 +1,17 @@
-import random
+from random import randrange
+from game_types import Position, Size
 
 
-def snake_is_out_of_bounds(snake_position: (int, int), display_size: (int, int)):
-    if (0 < snake_position[0] < display_size[0]) and (
-        0 < snake_position[1] < display_size[1]
-    ):
+def snake_is_out_of_bounds(snake_position: Position, display_size: Size):
+    (x, y) = snake_position
+    (width, height) = display_size
+    if (0 <= x < width) and (0 <= y < height):
         return False
     return True
 
 
-def generate_random_square(display_size: (int, int), square_size: (int, int)):
+def generate_random_square(display_size: Size, square_size: int) -> Position:
     return (
-        round(random.randrange(0, display_size[0] - square_size) / square_size)
-        * square_size,
-        round(random.randrange(0, display_size[1] - square_size) / square_size)
-        * square_size,
+        randrange(0, int(display_size[0] / square_size)) * square_size,
+        randrange(0, int(display_size[1] / square_size)) * square_size,
     )

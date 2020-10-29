@@ -3,8 +3,9 @@ Snek
 """
 
 import pygame
-from game_objects.game_settings import GameSettings
+
 from game import game_loop
+from game_objects.game_settings import GameSettings
 
 pygame.init()
 game_settings = GameSettings()
