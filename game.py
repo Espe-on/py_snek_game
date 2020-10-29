@@ -1,8 +1,7 @@
-from io import StringIO
 import time
 
-from pygame import Color, Rect
 import pygame
+from pygame import Color, Rect, Surface
 from pygame.font import Font
 
 from game_objects.food import Food
@@ -11,7 +10,7 @@ from game_objects.snake import Snake
 from utils.game_utils import snake_is_out_of_bounds
 
 
-def game_loop(game_board: pygame, display, game_settings: GameSettings):
+def game_loop(game_board: pygame, display: Surface, game_settings: GameSettings):
     display_size = game_settings.display_size
     pixel_size = game_settings.pixel_size
     colors = game_settings.colours

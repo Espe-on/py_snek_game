@@ -1,5 +1,3 @@
-from typing import List
-
 from game_types import Size, Tail
 from utils.game_utils import generate_random_square
 
