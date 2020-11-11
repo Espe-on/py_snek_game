@@ -3,7 +3,8 @@ from game_types import Position, Tail
 
 class Snake:
     def __init__(self, position: Position, pixel_size: int):
-        self.head_position = position
+        self.orig_position: Position = position
+        self.head_position: Position = position
         self.tail: Tail = []
         self.direction: Position = (0, 0)
         self._pixel = pixel_size
@@ -39,3 +40,8 @@ class Snake:
 
     def is_eating_itself(self):
         return self.head_position in self.tail
+
+    def reset(self):
+        self.head_position = self.orig_position
+        self.direction = (0, 0)
+        self.tail = []

@@ -1,7 +1,6 @@
-import time
-
 import pygame
 from pygame import Color, Rect, Surface
+from pygame.constants import QUIT, KEYDOWN, K_LEFT, K_RIGHT, K_UP, K_DOWN
 from pygame.font import Font
 
 from game_objects.food import Food
@@ -10,51 +9,93 @@ from game_objects.snake import Snake
 from utils.game_utils import snake_is_out_of_bounds
 
 
-def game_loop(game_board: pygame, display: Surface, game_settings: GameSettings):
+def game_loop(display: Surface, game_settings: GameSettings):
     display_size = game_settings.display_size
     pixel_size = game_settings.pixel_size
     colors = game_settings.colours
-    font_style_large = game_board.font.SysFont("", 50)
-    font_style_small = game_board.font.SysFont("", 25)
+    font_style_large = Font(None, 50)
+    font_style_small = Font(None, 25)
 
     snake = Snake(game_settings.starting_position, pixel_size)
     food = Food(display_size, pixel_size)
-    clock = game_board.time.Clock()
+    clock = pygame.time.Clock()
     game_running = True
-    game_playing = True
+    intro = True
+    crashed = False
+    playing = False
+    score = 0
+
+    def handle_event():
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                quit()
+            if event.type == KEYDOWN:
+                if event.key == K_LEFT and not (
+                    snake.direction == snake.direction_right
+                ):
+                    snake.move_left()
+
+                elif event.key == K_RIGHT and not (
+                    snake.direction == snake.direction_left
+                ):
+                    snake.move_right()
+
+                elif event.key == K_UP and not (
+                    snake.direction == snake.direction_down
+                ):
+                    snake.move_up()
+
+                elif event.key == K_DOWN and not (
+                    snake.direction == snake.direction_up
+                ):
+                    snake.move_down()
+
+    def wait(ms: int):
+        waiting = True
+        while waiting:
+            handle_event()
+
+            ms -= clock.tick(120)
+            if ms <= 0:
+                waiting = False
 
     def message(msg: str, color: Color, font: Font):
-        mesg = font.render(msg, True, color)
-        display.blit(mesg, game_settings.starting_position)
+        text = font.render(msg, False, color)
+        text_rect = text.get_rect()
+        text_rect.center = game_settings.starting_position
+
+        return text, text_rect
+
+    def display_message(msg: str, color: Color, font: Font):
+        display.fill(colors.background)
+        pygame.display.update()
+        print(f"displaying {msg}")
+        text, text_rect = message(msg, color, font)
+        pygame.draw.rect(
+            display,
+            Color(128, 0, 128),
+            text_rect,
+        )
+        display.blit(text, text_rect)
+        wait(2000)
+
+    def draw_score():
+        score_text, score_text_rect = message(
+            f"{score}", Color(40, 40, 40), font_style_large
+        )
+        display.blit(score_text, score_text_rect)
 
     # This section is the game intro screen
     while game_running:
-        score = 0
-        while game_playing:
-            for event in game_board.event.get():
-                if event.type == game_board.QUIT:
-                    game_running = False
-                if event.type == game_board.KEYDOWN:
-                    if event.key == game_board.K_LEFT and not (
-                        snake.direction == snake.direction_right
-                    ):
-                        snake.move_left()
+        if intro:
+            display_message("SNAKE!", colors.main, font_style_large)
+            intro = False
+            playing = True
 
-                    elif event.key == game_board.K_RIGHT and not (
-                        snake.direction == snake.direction_left
-                    ):
-                        snake.move_right()
+        handle_event()
 
-                    elif event.key == game_board.K_UP and not (
-                        snake.direction == snake.direction_down
-                    ):
-                        snake.move_up()
-
-                    elif event.key == game_board.K_DOWN and not (
-                        snake.direction == snake.direction_up
-                    ):
-                        snake.move_down()
-
+        if playing:
             if food.position == snake.head_position:
                 score = score + 1
                 food.move_food(snake.tail)
@@ -62,10 +103,10 @@ def game_loop(game_board: pygame, display: Surface, game_settings: GameSettings)
             snake.resolve_position(score)
 
             if snake_is_out_of_bounds(snake.head_position, display_size):
-                game_playing = False
+                crashed = True
 
             if snake.is_eating_itself():
-                game_playing = False
+                crashed = True
 
             # Logging
             print(
@@ -80,12 +121,14 @@ def game_loop(game_board: pygame, display: Surface, game_settings: GameSettings)
 
             # Rendering Game
             display.fill(colors.background)
-            game_board.draw.rect(
+            draw_score()
+
+            pygame.draw.rect(
                 display,
                 colors.highlight,
                 [food.position[0], food.position[1], pixel_size, pixel_size],
             )
-            game_board.draw.rect(
+            pygame.draw.rect(
                 display,
                 colors.main,
                 Rect(
@@ -94,23 +137,29 @@ def game_loop(game_board: pygame, display: Surface, game_settings: GameSettings)
                 ),
             )
             for tail_position in snake.tail:
-                game_board.draw.rect(
+                pygame.draw.rect(
                     display,
                     colors.main,
                     [tail_position[0], tail_position[1], pixel_size, pixel_size],
                 )
-            game_board.display.update()
+
             clock.tick(10)
 
-        # Rendering Lost Screen
-        message("You Lost", colors.highlight, font_style_large)
-        game_board.display.update()
-        time.sleep(2)
-        display.fill(colors.background)
-        message(f"Score: {score}", colors.highlight, font_style_small)
-        game_board.display.update()
-        time.sleep(2)
-        game_running = False
+        if crashed:
+            # Rendering Lost Screen
+            # print("LOST, rendering lost message")
+            # display_message("You Lost", colors.highlight, font_style_large)
 
-    game_board.quit()
+            # print("rendering score")
+            playing = False
+            display_message(f"FAIL", colors.highlight, font_style_large)
+            display_message(f"Score: {score}", colors.highlight, font_style_small)
+            snake.reset()
+            score = 0
+            crashed = False
+            playing = True
+
+        pygame.display.update()
+
+    pygame.quit()
     quit()
